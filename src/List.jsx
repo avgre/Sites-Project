@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { withRouter } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
+import Details from './Details.jsx';
 import Button from './Button.jsx';
-import { Icon, InlineIcon } from '@iconify/react';
+import { Icon } from '@iconify/react';
 import chevronRight from '@iconify/icons-mdi-light/chevron-right';
 import chevronDoubleDown from '@iconify/icons-mdi-light/chevron-double-down';
 class List extends Component {
@@ -12,34 +13,45 @@ class List extends Component {
     this.state = {
       sites: [],
       limit: 20,
+      redirect: false,
     };
   }
+  handleLoadSites = () => {
+    this.setState({ limit: this.state.limit + 20 });
+    fetch(
+      'https://tracktik-challenge.staffr.com/sites?_start=0&_end=' +
+        this.state.limit
+    )
+      .then((res) => res.json())
+      .then((json) => this.setState({ sites: json }));
+  };
+  handleNext = (idx) => {
+    const siteID = this.state.sites[idx].id;
+    this.props.dispatch({
+      type: 'SET_SITE',
+      payload: siteID,
+    });
+    console.log(this.state);
+    this.setState({ redirect: true });
+  };
   async componentDidMount() {
     const response = await fetch(
       'https://tracktik-challenge.staffr.com/sites?_start=0&_end=' +
         this.state.limit
     );
-    console.log(response);
     const json = await response.json();
-    this.setState({ sites: json });
-    console.log(this.state);
+    this.setState({ sites: json, limit: this.state.limit + 20 });
   }
-  handleLoadSites = () => {
-    const response = fetch(
-      'https://tracktik-challenge.staffr.com/sites?_start=0&_end=' +
-        this.state.limit
-    )
-      .then((res) => res.json())
-      .then((json) =>
-        this.setState({ sites: json, limit: this.state.limit + 20 })
-      );
-  };
+
   render() {
+    if (this.state.redirect === true) {
+      return <Redirect push to="/details" />;
+    }
     return (
       <>
         <Title>SITES</Title>
         <StyledList>
-          {this.state.sites.map((site) => (
+          {this.state.sites.map((site, idx) => (
             <ListElement>
               <ListImg src={site.images[0]}></ListImg>
               <TextList>
@@ -47,7 +59,12 @@ class List extends Component {
                 <Text>{site.contacts.main.phoneNumber}</Text>
                 <Text>{site.contacts.main.address.street}</Text>
               </TextList>
-              <Button type="next">
+              <Button
+                type="next"
+                onClick={() => {
+                  this.handleNext(idx);
+                }}
+              >
                 <Icon
                   icon={chevronRight}
                   style={{ color: 'white', fontSize: '35px' }}
@@ -56,7 +73,12 @@ class List extends Component {
             </ListElement>
           ))}
         </StyledList>
-        <Button type="more" onClick={this.handleLoadSites}>
+        <Button
+          type="more"
+          onClick={() => {
+            this.handleLoadSites();
+          }}
+        >
           <Icon
             icon={chevronDoubleDown}
             style={{
@@ -138,4 +160,10 @@ const Text = styled('li')`
   line-height: 13px;
 `;
 
-export default List;
+const mapStateToProps = (state) => {
+  return {
+    currentSite: state.site,
+  };
+};
+
+export default connect(mapStateToProps)(List);

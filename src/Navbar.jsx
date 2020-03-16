@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Icon, InlineIcon } from '@iconify/react';
 import menuIcon from '@iconify/icons-mdi-light/menu';
@@ -53,16 +54,20 @@ function Navbar() {
             style={{ color: 'white', fontSize: '35px', padding: '10px' }}
           />
           <StyledTitle src={'/images/logo-black.svg'} />
-          <Icon
-            icon={homeIcon}
-            style={{ color: 'white', fontSize: '35px', padding: '10px' }}
-          />
+          <Link to="list">
+            <Icon
+              icon={homeIcon}
+              style={{ color: 'white', fontSize: '35px', padding: '10px' }}
+            />
+          </Link>
         </NavRed>
         <NavBlack>
-          <Icon
-            icon={accountIcon}
-            style={{ color: 'white', fontSize: '35px' }}
-          />
+          <Link to="account">
+            <Icon
+              icon={accountIcon}
+              style={{ color: 'white', fontSize: '35px' }}
+            />
+          </Link>
         </NavBlack>
       </StyledNavbar>
       <Spacer />
