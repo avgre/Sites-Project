@@ -8,7 +8,7 @@ const persistConfig = {
 };
 
 const initialState = {
-  site: '',
+  siteID: '',
 };
 
 function reducer(state = initialState, action) {

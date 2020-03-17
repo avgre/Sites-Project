@@ -27,6 +27,7 @@ class List extends Component {
   };
   handleNext = (idx) => {
     const siteID = this.state.sites[idx].id;
+    console.log(siteID);
     this.props.dispatch({
       type: 'SET_SITE',
       payload: siteID,
@@ -162,7 +163,7 @@ const Text = styled('li')`
 
 const mapStateToProps = (state) => {
   return {
-    currentSite: state.site,
+    siteID: state.siteID,
   };
 };
 
