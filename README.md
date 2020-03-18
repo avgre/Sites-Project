@@ -1,3 +1,12 @@
+Mobile Screens for Tracktik Application
+
+I've created the 2 screens and also hit the /me endpoint to create an acount screen. Below I have also attatched some design screens in figma that helped me create this.
+
+npm install and npm start should get the project up and running locally.
+
+Figma Design Screens:
+https://www.figma.com/file/BsGdZSTLi0Zs4GwUtlFitV/tracktik?node-id=0%3A1
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

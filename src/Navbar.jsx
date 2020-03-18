@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Icon, InlineIcon } from '@iconify/react';
+import { Icon } from '@iconify/react';
 import menuIcon from '@iconify/icons-mdi-light/menu';
 import homeIcon from '@iconify/icons-mdi-light/home';
 import accountIcon from '@iconify/icons-mdi-light/account';
