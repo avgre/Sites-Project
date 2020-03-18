@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import Details from './Details.jsx';
 import Button from './Button.jsx';
 import { Icon } from '@iconify/react';
 import chevronRight from '@iconify/icons-mdi-light/chevron-right';
@@ -27,12 +26,18 @@ class List extends Component {
   };
   handleNext = (idx) => {
     const siteID = this.state.sites[idx].id;
-    console.log(siteID);
+    const details = this.state.sites[idx];
     this.props.dispatch({
       type: 'SET_SITE',
       payload: siteID,
     });
-    console.log(this.state);
+    this.props.dispatch({
+      type: 'SET_DETAILS',
+      payload: details,
+    });
+    this.props.dispatch({
+      type: 'LOAD',
+    });
     this.setState({ redirect: true });
   };
   async componentDidMount() {
@@ -108,7 +113,6 @@ const Title = styled('div')`
   font-style: normal;
   font-weight: 600;
 `;
-
 const ListImg = styled('img')`
   width: 40px;
   height: 40px;
@@ -117,7 +121,6 @@ const ListImg = styled('img')`
   padding: 5px;
   margin-left: 10px;
 `;
-
 const StyledList = styled('ul')`
   list-style-type: none;
   margin: 0;
@@ -125,7 +128,6 @@ const StyledList = styled('ul')`
   overflow: hidden;
   overflow-y: scroll;
 `;
-
 const TextList = styled('ul')`
   list-style-type: none;
   width: 200px;
@@ -133,7 +135,6 @@ const TextList = styled('ul')`
   padding: 0;
   color: #ffffff;
 `;
-
 const ListElement = styled('li')`
   margin: 0;
   width: 360px;
@@ -152,7 +153,6 @@ const TextTitle = styled('li')`
   line-height: 16px;
   margin-bottom: 5px;
 `;
-
 const Text = styled('li')`
   font-family: 'Montserrat', sans-serif;
   font-style: normal;

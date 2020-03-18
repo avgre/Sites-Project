@@ -1,37 +1,64 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router';
 import styled from 'styled-components';
 import Button from './Button.jsx';
+import { Icon } from '@iconify/react';
+import chevronDoubleLeft from '@iconify/icons-mdi-light/chevron-double-left';
 
 class Account extends Component {
   constructor(props) {
     super(props);
     this.state = {
       account: '',
+      isLoading: true,
+      redirect: false,
     };
   }
   async componentDidMount() {
-    const response = await fetch('https://tracktik-challenge.staffr.com/me');
-    console.log(response);
-    const json = await response.json();
-    this.setState({ account: json });
-    console.log(this.state);
+    fetch('https://tracktik-challenge.staffr.com/me')
+      .then((res) => res.json())
+      .then((json) => {
+        this.setState({ account: json, isLoading: false });
+      });
   }
   render() {
-    return (
-      <>
-        <Title>Account</Title>
+    if (this.state.redirect) {
+      return <Redirect push to="/list" />;
+    }
+    if (this.state.isLoading === true) {
+      return <Title>Loading</Title>;
+    } else
+      return (
+        <>
+          <Title>Account</Title>
 
-        <AccountDiv>
-          <ListImg src={this.state.account.avatar}></ListImg>
-          <TextList>
-            <TextTitle>{this.state.account.givenName}</TextTitle>
-            <Text>{'Username:  ' + this.state.account.username}</Text>
-            <Text>{'Email:     ' + this.state.account.email}</Text>
-            <Text>{'Country:   ' + this.state.account.locale}</Text>
-          </TextList>
-        </AccountDiv>
-      </>
-    );
+          <AccountDiv>
+            <ListImg src={this.state.account.avatar}></ListImg>
+            <TextList>
+              <TextTitle>{this.state.account.givenName}</TextTitle>
+              <Text>{'Username:  ' + this.state.account.username}</Text>
+              <Text>{'Email:     ' + this.state.account.email}</Text>
+              <Text>{'Country:   ' + this.state.account.locale}</Text>
+            </TextList>
+          </AccountDiv>
+          <Button
+            type="more"
+            onClick={() => {
+              this.handleBack();
+            }}
+          >
+            <Icon
+              icon={chevronDoubleLeft}
+              style={{
+                fontSize: '35px',
+                left: '4px',
+                top: '4px',
+                position: 'absolute',
+              }}
+            />
+          </Button>
+        </>
+      );
   }
 }
 
